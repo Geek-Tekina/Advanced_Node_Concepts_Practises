@@ -8,11 +8,13 @@ const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const { configureCors } = require("./config/corsConfig");
 const logger = require("./middlewares/logger");
+const createBasicRateLimiter = require("./middlewares/rateLimmiting");
 
 const app = express();
 
 app.use(configureCors());
 app.use(cookieParser());
+app.use(createBasicRateLimiter(100, 15 * 60 * 1000)); // 100 req per 15 mintues
 app.use(express.json()); // without this capturing the req.body will not work
 
 app.get("/stream", (req, res) => {
