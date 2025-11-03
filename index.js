@@ -1,14 +1,18 @@
 const express = require("express");
 const { adminAuth, userAuth } = require("./middlewares/auth");
-const app = express();
 const { dbConnect } = require("./database/connection");
 const cookieParser = require("cookie-parser");
-app.use(cookieParser());
-app.use(express.json()); // without this capturing the req.body will not work
 const { User } = require("./models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
+const { configureCors } = require("./config/corsConfig");
+
+const app = express();
+
+app.use(configureCors());
+app.use(cookieParser());
+app.use(express.json()); // without this capturing the req.body will not work
 
 app.get("/stream", (req, res) => {
   const file = fs.readFileSync("./interstellar.txt");
