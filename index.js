@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const { configureCors } = require("./config/corsConfig");
+const logger = require("./middlewares/logger");
 
 const app = express();
 
@@ -42,7 +43,7 @@ app.get("/stream", (req, res) => {
 
 app.use("/admin", adminAuth);
 
-app.get("/admin/getData", (req, res) => {
+app.get("/admin/getData", logger, (req, res) => {
   try {
     const data = {
       amount: 234560,
